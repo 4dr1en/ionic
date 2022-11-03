@@ -5,7 +5,7 @@
       <div class="home-content">
         <h1 class="home-title"></h1>
         <FlashText />
-        <img src="assets/ghost.png" alt="ghost" />
+        <img src="assets/ghost.png" alt="ghost" class="ghost"/>
         <div class="play-btn-container">
           <a href="/play"><button class="play-btn">Play</button></a>
         </div>
@@ -97,5 +97,90 @@ a {
 
 .home-nav-playbtn {
   font-size: 50px;
+}
+.ghost{
+  animation: twinkle infinite 5s; 
+}
+
+@keyframes twinkle {
+  0% {
+    opacity: 0;
+  }
+
+  3% {
+    opacity: 0.5;
+  }
+
+  6% {
+    opacity: 0.2;
+  }
+
+  10% {
+    opacity: 0.9;
+  }
+
+  10.1% {
+    opacity: 0.8;
+  }
+
+  10.2% {
+    opacity: 1;
+  }
+
+  11.1% {
+    opacity: 0;
+  }
+
+  11.2% {
+    opacity: 0.5;
+  }
+
+  12% {
+    opacity: 0.7;
+  }
+
+  12.1% {
+    opacity: 0.1;
+  }
+
+  13% {
+    opacity: 0.8;
+  }
+
+  12.1% {
+    opacity: 0.5;
+  }
+
+  40.1% {
+    opacity: 0.2;
+  }
+
+  42% {
+    opacity: 0.6;
+  }
+
+  44% {
+    opacity: 0.7;
+  }
+
+  46% {
+    opacity: 0;
+  }
+
+  48% {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  80% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0.1;
+  }
 }
 </style>

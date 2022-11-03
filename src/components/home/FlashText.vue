@@ -1,28 +1,28 @@
 <template>
   <div id="flash-container">
     <div>
-      <p>GHOST HUNTER EXTRA !<span>best game</span></p>
+      <p>GHOST HUNTER EXTRA !<span>best game ever</span></p>
     </div>
     <div>
-      <p>le jeux le plus<span>EFFRAYANT</span></p>
+      <p>le jeux le plus<span>EFFRAYANT du MOOONNNDE</span></p>
     </div>
     <div>
-      <p><span>fait par des</span> EXPERT</p>
+      <p>GHOST HUNTER EXTRA !<span>best game ever</span></p>
     </div>
     <div>
-      <p>We See<span>you</span></p>
+      <p>le jeux le plus<span>EFFRAYANT du MOOONNNDE</span></p>
     </div>
     <div>
-      <p>Moody<span>atmosphere</span></p>
+      <p>GHOST HUNTER EXTRA !<span>best game ever</span></p>
     </div>
     <div>
-      <p><span>Stay</span> Awake</p>
+      <p>le jeux le plus<span>EFFRAYANT du MOOONNNDE</span></p>
     </div>
     <div>
-      <p>Creepy<span>style</span></p>
+      <p>GHOST HUNTER EXTRA !<span>best game ever</span></p>
     </div>
     <div>
-      <p><span>Look</span>Behind You</p>
+      <p>le jeux le plus<span>EFFRAYANT du MOOONNNDE</span></p>
     </div>
   </div>
 </template>
@@ -40,7 +40,8 @@ export default defineComponent({
 
 <style scoped>
 #flash-container {
-  font-size: 4em;
+  font-size: 2em;
+  text-align: center;
   margin: 0 auto;
   text-transform: uppercase;
   display: flex;
