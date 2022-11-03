@@ -4,7 +4,6 @@ import { RouteRecordRaw } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import PlayPage from '../views/PlayPage.vue';
 import TabsPage from '../views/TabsPage.vue';
-import WahidCamera from '../views/WahidCamera.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -14,10 +13,6 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/play',
     component: PlayPage,
-  },
-  {
-    path: '/Wahid',
-    component: WahidCamera,
   },
   {
     path: '/tabs/',

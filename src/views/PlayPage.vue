@@ -1,11 +1,8 @@
 <template>
   <div>
     <h1>Play Page</h1>
-    <ion-content>
-      <CameraPreview />
 
-      <!-- <ion-fab> markup  -->
-    </ion-content>
+    <ComponentCam />
   </div>
 </template>
 
@@ -14,13 +11,12 @@ import { defineComponent } from 'vue';
 
 import { IonGrid, IonRow, IonCol, IonImg, IonContent } from '@ionic/vue';
 
-import CameraPreview from '@/components/CameraPreview.vue';
+import ComponentCam from '@/components/ComponentCam.vue';
 
 export default defineComponent({
   name: 'PlayPage',
   components: {
-    IonContent,
-    CameraPreview,
+    ComponentCam,
   },
 });
 </script>
