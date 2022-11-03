@@ -37,7 +37,7 @@ const openCamera = () => {
 openCamera();
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 ion-content {
   --background: transparent !important;
 }
