@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>Play Page</h1>
-
     <ComponentCam />
   </div>
 </template>

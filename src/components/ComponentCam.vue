@@ -1,15 +1,19 @@
 <template>
-  <div>test</div>
-
-  <button @click="openCamera">Start Camera</button>
+  <div id="cameraPreview" class="cameraPreview">
+    <div class="gost" v-if="cameraActive">
+      <p>booooohh !</p>
+      <img src="assets/ghost.png" alt="" />
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-/*import {o
+/*import {
   CameraPreview,
   CameraPreviewOptions,
   CameraPreviewPictureOptions,
 } from '@capacitor-community/camera-preview';*/
+
 import '@capacitor-community/camera-preview';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { Plugins } from '@capacitor/core';
@@ -22,20 +26,22 @@ import {
 import '@capacitor-community/camera-preview';
 const { CameraPreview } = Plugins;
 
-let imageany = null;
-let cameraActive = false;
-let torchActive = false;
+let imageany = ref(null);
+let cameraActive = ref(false);
+let torchActive = ref(false);
 
 const openCamera = () => {
   const cameraPreviewOptions: CameraPreviewOptions = {
     position: 'rear',
     parent: 'cameraPreview',
     className: 'cameraPreview',
+    toBack: true,
   };
 
   CameraPreview.start(cameraPreviewOptions);
   cameraActive = true;
 };
+openCamera();
 </script>
 
 <style scoped lang="scss">
@@ -60,5 +66,12 @@ ion-content {
   display: flex;
   width: 100%;
   height: 100%;
+}
+
+.cameraPreview {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  z-index: 1;
 }
 </style>
