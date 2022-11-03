@@ -1,10 +1,5 @@
 <template>
-  <div id="cameraPreview" class="cameraPreview">
-    <div class="gost" v-if="cameraActive">
-      <p>booooohh !</p>
-      <img src="assets/ghost.png" alt="" />
-    </div>
-  </div>
+  <div id="cameraPreview" class="cameraPreview"></div>
 </template>
 
 <script lang="ts" setup>
@@ -29,6 +24,7 @@ const openCamera = () => {
     parent: 'cameraPreview',
     className: 'cameraPreview',
     toBack: true,
+    width: window.screen.width,
   };
 
   CameraPreview.start(cameraPreviewOptions);
@@ -63,8 +59,16 @@ ion-content {
 
 .cameraPreview {
   position: absolute;
-  width: 100%;
-  height: 50%;
-  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+#video{
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 </style>

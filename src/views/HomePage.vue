@@ -5,7 +5,7 @@
       <div class="home-content">
         <h1 class="home-title"></h1>
         <FlashText />
-        <img src="assets/ghost.png" alt="ghost" class="ghost"/>
+        <img src="assets/ghost.png" alt="ghost" class="ghost-home"/>
         <div class="play-btn-container">
           <a href="/play"><button class="play-btn">Play</button></a>
         </div>
@@ -98,7 +98,7 @@ a {
 .home-nav-playbtn {
   font-size: 50px;
 }
-.ghost{
+.ghost-home{
   animation: twinkle infinite 5s; 
 }
 
