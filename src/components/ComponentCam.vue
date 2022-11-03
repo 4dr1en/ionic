@@ -8,23 +8,16 @@
 </template>
 
 <script lang="ts" setup>
-/*import {
-  CameraPreview,
-  CameraPreviewOptions,
-  CameraPreviewPictureOptions,
-} from '@capacitor-community/camera-preview';*/
-
-import '@capacitor-community/camera-preview';
-import { ref, onMounted, onUnmounted } from 'vue';
-import { Plugins } from '@capacitor/core';
 import {
+  CameraPreview,
   CameraPreviewOptions,
   CameraPreviewPictureOptions,
 } from '@capacitor-community/camera-preview';
 
+import { ref, onMounted, onUnmounted } from 'vue';
+
 // Needed for web registration
 import '@capacitor-community/camera-preview';
-const { CameraPreview } = Plugins;
 
 let imageany = ref(null);
 let cameraActive = ref(false);
@@ -39,7 +32,7 @@ const openCamera = () => {
   };
 
   CameraPreview.start(cameraPreviewOptions);
-  cameraActive = true;
+  cameraActive.value = true;
 };
 openCamera();
 </script>
