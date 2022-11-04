@@ -1,7 +1,10 @@
 <template>
   <div id="cameraPreview" class="cameraPreview">
     <div class="gost" v-if="cameraActive">
-      <p>{{ curPos }} / {{ gostDegPos }} --- {{ distanceFromGost }}</p>
+      <p>
+        {{ curPos }} / {{ gostDegPos }} --- {{ cameraActive ? 'on' : 'off' }} ---
+        {{ isAvailable ? 'on' : 'off' }}
+      </p>
       <img v-if="isGostVisible" src="assets/ghost.png" alt="" />
     </div>
   </div>
@@ -11,17 +14,28 @@
 import {
   CameraPreview,
   CameraPreviewOptions,
-} from "@capacitor-community/camera-preview";
+  CameraPreviewFlashMode,
+} from '@capacitor-community/camera-preview';
 
 import { ref } from "vue";
 
 import { Motion } from "@capacitor/motion";
 import { Vibration } from "@awesome-cordova-plugins/vibration/ngx";
 
+let lastFlash = Date.now();
 let cameraActive = ref(false);
-let curPos = ref("toto");
+let curPos = ref('x');
 let isGostVisible = ref(false);
 let lastVibration = Date.now();
+let lightActive = ref(false);
+const isAvailable = ref(false);
+CameraPreview.getSupportedFlashModes().then((available) => {
+  isAvailable.value = available.result.includes('torch');
+});
+const flashMode: CameraPreviewFlashMode = 'torch';
+CameraPreview.setFlashMode({
+  flashMode: flashMode,
+});
 
 const gostDegPos = Math.floor(Math.random() * 360);
 
@@ -90,6 +104,21 @@ const loadOrientation = async () => {
       ghostScream.play();
     }
 
+    if (Date.now() - lastFlash > distanceFromGost.value * 10 * 2) {
+      CameraPreview.setFlashMode({
+        flashMode: flashMode,
+      });
+      lightActive.value = true;
+      setTimeout(() => {
+        // set off
+        CameraPreview.setFlashMode({
+          flashMode: 'off',
+        });
+        lightActive.value = false;
+      }, 100);
+      lastFlash = Date.now();
+    }
+
     let radar = document.getElementById("radar");
     let rotatePosition: number = 0;
     if (radar) {
@@ -140,6 +169,7 @@ ion-content {
   height: 100vh;
   z-index: -1;
 }
+#video {
 
 #video {
   position: absolute;
