@@ -1,7 +1,7 @@
 <template>
   <div id="cameraPreview" class="cameraPreview">
-    <div class="gost" v-if="cameraActive">
-      <img v-if="isGostVisible" src="assets/ghost.png" alt="" />
+    <div class="ghost" v-if="cameraActive">
+      <img v-if="isghostVisible" src="assets/ghost.png" alt="" />
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@ import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
 let lastFlash = Date.now();
 let cameraActive = ref(false);
-let isGostVisible = ref(false);
+let isghostVisible = ref(false);
 let lastVibration = Date.now();
 
 const flashMode: CameraPreviewFlashMode = 'torch';
@@ -28,18 +28,18 @@ CameraPreview.setFlashMode({
   flashMode: flashMode,
 });
 
-const gostDegPos = 0; //Math.floor(Math.random() * 360);
+const ghostDegPos = Math.floor(Math.random() * 360);
 
-let distanceFromGost = ref(0);
+let distanceFromghost = ref(0);
 
 const isInView = (curDegPos: number): boolean => {
   const demiAngle = 25;
-  let bool = curDegPos + demiAngle > gostDegPos && curDegPos - demiAngle < gostDegPos;
+  let bool = curDegPos + demiAngle > ghostDegPos && curDegPos - demiAngle < ghostDegPos;
   if (!bool) {
-    if (curDegPos + demiAngle > 360 && gostDegPos < curDegPos + demiAngle - 360) {
+    if (curDegPos + demiAngle > 360 && ghostDegPos < curDegPos + demiAngle - 360) {
       bool = true;
     }
-    if (curDegPos - demiAngle < 0 && gostDegPos > 360 + curDegPos - demiAngle) {
+    if (curDegPos - demiAngle < 0 && ghostDegPos > 360 + curDegPos - demiAngle) {
       bool = true;
     }
   }
@@ -47,14 +47,14 @@ const isInView = (curDegPos: number): boolean => {
 };
 
 /**
- * Get the distance between the gost and the player per cent of the max distance
+ * Get the distance between the ghost and the player per cent of the max distance
  */
 const calcDistanceFromView = (curDegPos: number): number => {
   const demiAngle = 25;
   if (isInView(curDegPos)) {
     return 0;
   }
-  let min = Math.abs(curDegPos - gostDegPos);
+  let min = Math.abs(curDegPos - ghostDegPos);
   if (min > 180) {
     min = 360 - min;
   }
@@ -78,19 +78,19 @@ openCamera();
 let lastOrientation = 0;
 const loadOrientation = async () => {
   await Motion.addListener('orientation', (event) => {
-    isGostVisible.value = isInView(event.alpha);
-    distanceFromGost.value = calcDistanceFromView(event.alpha);
+    isghostVisible.value = isInView(event.alpha);
+    distanceFromghost.value = calcDistanceFromView(event.alpha);
 
-    if (Date.now() - lastVibration > distanceFromGost.value * 10 * 1.5) {
+    if (Date.now() - lastVibration > distanceFromghost.value * 10 * 1.5) {
       navigator.vibrate(100);
       lastVibration = Date.now();
     }
-    if (isGostVisible.value) {
+    if (isghostVisible.value) {
       var ghostScream = new Audio('assets/audio/ghost_apparition_scream1.mp3');
       ghostScream.play();
     }
 
-    if (Date.now() - lastFlash > distanceFromGost.value * 10 * 2) {
+    if (Date.now() - lastFlash > distanceFromghost.value * 10 * 2) {
       CameraPreview.setFlashMode({
         flashMode: flashMode,
       });
@@ -163,17 +163,17 @@ ion-content {
   z-index: -1;
 }
 
-.gost {
+.ghost {
   position: absolute;
   z-index: 1;
   color: white;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  animation: gost 10s infinite linear;
+  animation: ghost 10s infinite linear;
 }
 
-@keyframes gost {
+@keyframes ghost {
   from {
     opacity: 60%;
     transform: translate(-50%, -50%) scale(1);
