@@ -1,10 +1,6 @@
 <template>
   <div id="cameraPreview" class="cameraPreview">
     <div class="gost" v-if="cameraActive">
-      <p>
-        {{ curPos }} / {{ gostDegPos }} --- {{ cameraActive ? 'on' : 'off' }} ---
-        {{ isAvailable ? 'on' : 'off' }}
-      </p>
       <img v-if="isGostVisible" src="assets/ghost.png" alt="" />
     </div>
   </div>
@@ -24,20 +20,15 @@ import { Vibration } from "@awesome-cordova-plugins/vibration/ngx";
 
 let lastFlash = Date.now();
 let cameraActive = ref(false);
-let curPos = ref('x');
-let isGostVisible = ref(false);
+let isGostVisible = ref(true);
 let lastVibration = Date.now();
-let lightActive = ref(false);
-const isAvailable = ref(false);
-CameraPreview.getSupportedFlashModes().then((available) => {
-  isAvailable.value = available.result.includes('torch');
-});
+
 const flashMode: CameraPreviewFlashMode = 'torch';
 CameraPreview.setFlashMode({
   flashMode: flashMode,
 });
 
-const gostDegPos = Math.floor(Math.random() * 360);
+const gostDegPos = 0; //Math.floor(Math.random() * 360);
 
 let distanceFromGost = ref(0);
 
@@ -90,8 +81,7 @@ const openCamera = () => {
 openCamera();
 let lastOrientation = 0;
 const loadOrientation = async () => {
-  await Motion.addListener("orientation", (event) => {
-    curPos.value = String(Math.round(event.alpha));
+  await Motion.addListener('orientation', (event) => {
     isGostVisible.value = isInView(event.alpha);
     distanceFromGost.value = calcDistanceFromView(event.alpha);
 
@@ -108,13 +98,11 @@ const loadOrientation = async () => {
       CameraPreview.setFlashMode({
         flashMode: flashMode,
       });
-      lightActive.value = true;
       setTimeout(() => {
         // set off
         CameraPreview.setFlashMode({
           flashMode: 'off',
         });
-        lightActive.value = false;
       }, 100);
       lastFlash = Date.now();
     }
@@ -183,5 +171,44 @@ ion-content {
   position: absolute;
   z-index: 1;
   color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: gost 10s infinite linear;
+}
+
+@keyframes gost {
+  from {
+    opacity: 60%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  14%,
+  86% {
+    opacity: 50%;
+    transform: translate(-60%, -55%) scale(1.1);
+  }
+
+  28%,
+  72% {
+    opacity: 70%;
+    transform: translate(-45%, -40%) scale(1.1);
+  }
+
+  42%,
+  58% {
+    opacity: 60%;
+    transform: translate(-50%, -55%) scale(1.1);
+  }
+
+  50% {
+    opacity: 50%;
+    transform: translate(-55%, -50%) scale(1.1);
+  }
+
+  to {
+    opacity: 60%;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 </style>
