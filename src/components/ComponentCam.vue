@@ -106,28 +106,28 @@ const loadOrientation = async () => {
     let radar = document.getElementById('radar');
     let rotatePosition = 0;
     if (radar) {
-      if (lastOrientation > event.alpha) {
-        rotatePosition++;
-      } else {
-        rotatePosition--;
-      }
-      radar.style.transform = `rotate(${rotatePosition}deg)`;
-      lastOrientation = event.alpha;
+      // if (lastOrientation > event.alpha) {
+      //   rotatePosition++;
+      // } else {
+      //   rotatePosition--;
+      // }
+
+
+      radar.style.transform = `rotate(${event.alpha+(ghostDegPos+50)}deg)`;
+      // lastOrientation = event.alpha;
     }
   });
 };
 
 loadOrientation();
 
-window.addEventListener("load", function (event) {
-  let pointerContainer = document.getElementById("pointer-container") as HTMLElement | null;
+// window.addEventListener("load", function (event) {
+//   let pointerContainer = document.getElementById("pointer-container") as HTMLElement | null;
   
-  if(pointerContainer !== null){
-    console.log(pointerContainer)
-    console.log(ghostDegPos)
-    pointerContainer.style.transform = `rotate(${ghostDegPos+45}deg)`;
-  }
-});
+//   if(pointerContainer !== null){
+//     pointerContainer.style.transform = `rotate(${0+50}deg)`;
+//   }
+// });
 </script>
 
 <style scoped>

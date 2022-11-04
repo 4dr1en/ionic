@@ -35,7 +35,7 @@ html {
   height: 100px;
   position: absolute;
   top: 80%;
-  left: 50%;
+  left: 30%;
   transform: translate(-50%, -50%);
   border-radius: 50%;
   border: 0.2rem solid #20ff4d;
