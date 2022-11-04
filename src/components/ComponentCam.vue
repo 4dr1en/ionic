@@ -60,6 +60,7 @@ const openCamera = () => {
     parent: 'cameraPreview',
     className: 'cameraPreview',
     toBack: true,
+    width: window.screen.width,
   };
 
   CameraPreview.start(cameraPreviewOptions);
@@ -109,12 +110,11 @@ ion-content {
 
 .cameraPreview {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
-
-#video {
+#video{
   position: absolute;
   inset: 0;
   object-fit: cover;
