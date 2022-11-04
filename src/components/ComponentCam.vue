@@ -134,6 +134,16 @@ const loadOrientation = async () => {
 };
 
 loadOrientation();
+
+window.addEventListener("load", function (event) {
+  let pointerContainer = document.getElementById("pointer-container") as HTMLElement | null;
+  
+  if(pointerContainer !== null){
+    console.log(pointerContainer)
+    console.log(ghostDegPos)
+    pointerContainer.style.transform = `rotate(${ghostDegPos+45}deg)`;
+  }
+});
 </script>
 
 <style scoped>

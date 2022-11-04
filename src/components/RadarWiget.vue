@@ -1,7 +1,8 @@
 <template>
   <div class="radar" id="radar">
-
-    <div class="ghost-pointer"></div>
+    <div class="pointer-container" id="pointer-container">
+      <div class="ghost-pointer"></div>
+    </div>
   </div>
 
 </template>
@@ -55,12 +56,25 @@ html {
   transform-origin: bottom right;
   border-radius: 100% 0 0 0;
 }
+
+.pointer-container{
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation-timing-function: linear;
+  transform-origin: bottom right;
+  border-radius: 100% 0 0 0;
+}
 .ghost-pointer{
   position: absolute;
   width: 10px;
   height: 10px;
-  left: 25%;
-  top: 25%;
+  left: 50%;
+  top: 50%;
+  /* right: -5px;
+  top: 37.5%; */
   background-color: red;
   border-radius:90px;
 }
