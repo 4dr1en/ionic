@@ -122,4 +122,9 @@ ion-content {
   height: 100vh;
   z-index: -1;
 }
+.gost {
+  position: absolute;
+  z-index: 1;
+  color: white;
+}
 </style>

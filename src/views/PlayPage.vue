@@ -1,11 +1,7 @@
 <template>
   <div>
-    <ComponentGyroscope />
+    <!-- <ComponentGyroscope /> -->
     <ComponentCam />
-    <div class="gost">
-      <p>booooohh !</p>
-      <img src="assets/ghost.png" alt="" />
-    </div>
   </div>
 </template>
 
@@ -38,14 +34,25 @@ export default defineComponent({
   name: "PlayPage",
   components: {
     ComponentCam,
-    ComponentGyroscope
+    // ComponentGyroscope
   },
 });
+let ambianceFilesName= [
+  "ambiance"
+]
+function randomAmbianceSound(ambianceFilesName: Array<string>){
+  let randomAmbiancePath = `assets/${ambianceFilesName[Math.random() * ambianceFilesName.length]}`;
+  var audioAmbiance = new Audio(randomAmbiancePath); 
+  audioAmbiance.addEventListener('ended', function() {
+      this.currentTime = 0;
+      this.play();
+  }, false);
+  audioAmbiance.play();
+}
+
+randomAmbianceSound(ambianceFilesName)
 </script>
 
 <style scoped>
-.gost {
-  position: absolute;
-  z-index: 1;
-}
+
 </style>
