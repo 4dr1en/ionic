@@ -1,27 +1,58 @@
 <template>
   <div id="cameraPreview" class="cameraPreview">
     <div class="gost" v-if="cameraActive">
-      <p>booooohh !</p>
-      <img src="assets/ghost.png" alt="" />
+      <p>{{ curPos }} / {{ gostDegPos }} --- {{ distanceFromGost }}</p>
+      <img v-if="isGostVisible" src="assets/ghost.png" alt="" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import {
-  CameraPreview,
-  CameraPreviewOptions,
-  CameraPreviewPictureOptions,
-} from '@capacitor-community/camera-preview';
+import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
 
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 
-// Needed for web registration
-import '@capacitor-community/camera-preview';
+import { Motion } from '@capacitor/motion';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
-let imageany = ref(null);
 let cameraActive = ref(false);
-let torchActive = ref(false);
+let curPos = ref('toto');
+let isGostVisible = ref(false);
+let lastVibration = Date.now();
+
+const gostDegPos = Math.floor(Math.random() * 360);
+
+let distanceFromGost = ref(0);
+
+const isInView = (curDegPos: number): boolean => {
+  const demiAngle = 15;
+  let bool = curDegPos + demiAngle > gostDegPos && curDegPos - demiAngle < gostDegPos;
+  if (!bool) {
+    if (curDegPos + demiAngle > 360 && gostDegPos < curDegPos + demiAngle - 360) {
+      bool = true;
+    }
+    if (curDegPos - demiAngle < 0 && gostDegPos > 360 + curDegPos - demiAngle) {
+      bool = true;
+    }
+  }
+  return bool;
+};
+
+/**
+ * Get the distance between the gost and the player per cent of the max distance
+ */
+const calcDistanceFromView = (curDegPos: number): number => {
+  const demiAngle = 15;
+  if (isInView(curDegPos)) {
+    return 0;
+  }
+  let min = Math.abs(curDegPos - gostDegPos);
+  if (min > 180) {
+    min = 360 - min;
+  }
+  min -= demiAngle;
+  return (min * 100) / (180 - demiAngle);
+};
 
 const openCamera = () => {
   const cameraPreviewOptions: CameraPreviewOptions = {
@@ -35,6 +66,21 @@ const openCamera = () => {
   cameraActive.value = true;
 };
 openCamera();
+
+const loadOrientation = async () => {
+  await Motion.addListener('orientation', (event) => {
+    curPos.value = String(Math.round(event.alpha));
+    isGostVisible.value = isInView(event.alpha);
+    distanceFromGost.value = calcDistanceFromView(event.alpha);
+
+    if (Date.now() - lastVibration > distanceFromGost.value * 10 * 1.5) {
+      navigator.vibrate(100);
+      lastVibration = Date.now();
+    }
+  });
+};
+
+loadOrientation();
 </script>
 
 <style scoped>
@@ -64,7 +110,16 @@ ion-content {
 .cameraPreview {
   position: absolute;
   width: 100%;
-  height: 50%;
+  height: 100%;
   z-index: 1;
+}
+
+#video {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
 }
 </style>
