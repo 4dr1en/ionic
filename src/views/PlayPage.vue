@@ -2,6 +2,9 @@
   <div>
     <!-- <ComponentGyroscope /> -->
     <ComponentCam />
+    <div class="widget">
+      <RadarWiget />
+    </div>
   </div>
 </template>
 
@@ -11,6 +14,7 @@ import { defineComponent } from "vue";
 import { IonGrid, IonRow, IonCol, IonImg, IonContent } from "@ionic/vue";
 
 import ComponentCam from "@/components/ComponentCam.vue";
+import RadarWiget from "@/components/RadarWiget.vue";
 import ComponentGyroscope from "@/components/android/ComponentGyroscope.vue";
 // let ghostPosition = Math.floor(Math.random() * 361);
 let ghostPosition = 200;
@@ -33,19 +37,19 @@ let ghostPosition = 200;
 export default defineComponent({
   name: "PlayPage",
   components: {
-    ComponentCam,
+    ComponentCam, RadarWiget
     // ComponentGyroscope
   },
 });
-let ambianceFilesName= [
+let ambianceFilesName = [
   "ambiance"
 ]
-function randomAmbianceSound(ambianceFilesName: Array<string>){
+function randomAmbianceSound(ambianceFilesName: Array<string>) {
   let randomAmbiancePath = `assets/${ambianceFilesName[Math.random() * ambianceFilesName.length]}`;
-  var audioAmbiance = new Audio(randomAmbiancePath); 
-  audioAmbiance.addEventListener('ended', function() {
-      this.currentTime = 0;
-      this.play();
+  var audioAmbiance = new Audio(randomAmbiancePath);
+  audioAmbiance.addEventListener('ended', function () {
+    this.currentTime = 0;
+    this.play();
   }, false);
   audioAmbiance.play();
 }

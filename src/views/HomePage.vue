@@ -5,7 +5,8 @@
       <div class="home-content">
         <h1 class="home-title"></h1>
         <FlashText />
-        <img src="assets/ghost.png" alt="ghost" class="ghost-home"/>
+        <RadarWiget />
+        <img src="assets/ghost.png" alt="ghost" class="ghost-home" />
         <div class="play-btn-container">
           <a href="/play"><button class="play-btn">Play</button></a>
         </div>
@@ -18,15 +19,17 @@
 import { defineComponent } from 'vue';
 import { IonPage, IonContent } from '@ionic/vue';
 import FlashText from '@/components/home/FlashText.vue';
+import RadarWiget from '@/components/RadarWiget.vue';
 import { IonHeader, IonToolbar, IonTitle } from '@ionic/vue';
+
 
 export default defineComponent({
   name: 'Tab1Page',
-  components: { IonContent, IonPage, FlashText },
+  components: { IonContent, IonPage, FlashText, RadarWiget },
 });
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style >
 h1,
 h2 {
   font-weight: normal;
@@ -98,8 +101,9 @@ a {
 .home-nav-playbtn {
   font-size: 50px;
 }
-.ghost-home{
-  animation: twinkle infinite 5s; 
+
+.ghost-home {
+  animation: twinkle infinite 5s;
 }
 
 @keyframes twinkle {

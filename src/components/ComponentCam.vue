@@ -67,7 +67,7 @@ const openCamera = () => {
   cameraActive.value = true;
 };
 openCamera();
-
+let lastOrientation = 0
 const loadOrientation = async () => {
   await Motion.addListener('orientation', (event) => {
     curPos.value = String(Math.round(event.alpha));
@@ -77,6 +77,16 @@ const loadOrientation = async () => {
     if (Date.now() - lastVibration > distanceFromGost.value * 10 * 1.5) {
       navigator.vibrate(100);
       lastVibration = Date.now();
+    }
+
+    let radar = document.getElementById("radar");
+    if (radar) {
+      if (lastOrientation > event.alpha) {
+        radar.style.transform = "rotate(1deg)";
+      } else {
+        radar.style.transform = "rotate(-1deg)";
+      }
+      lastOrientation = event.alpha;
     }
   });
 };
@@ -88,12 +98,14 @@ loadOrientation();
 ion-content {
   --background: transparent !important;
 }
+
 .overlay {
   position: absolute;
   width: 100%;
   height: 100%;
   z-index: 10;
 }
+
 .my-overlay {
   color: red;
   z-index: 12;
@@ -101,6 +113,7 @@ ion-content {
   top: 30%;
   left: 4;
 }
+
 .content-camera-preview {
   position: absolute;
   display: flex;
@@ -114,7 +127,8 @@ ion-content {
   height: 100vh;
   z-index: -1;
 }
-#video{
+
+#video {
   position: absolute;
   inset: 0;
   object-fit: cover;
@@ -122,6 +136,7 @@ ion-content {
   height: 100vh;
   z-index: -1;
 }
+
 .gost {
   position: absolute;
   z-index: 1;
