@@ -2,7 +2,7 @@
   <div id="cameraPreview" class="cameraPreview">
     <div class="gost" v-if="cameraActive">
       <p>
-        {{ curPos }} / {{ gostDegPos }} --- {{ cameraActive ? 'on' : 'off' }} ---
+        {{ curPos }} / {{ ghostDegPos }} --- {{ cameraActive ? 'on' : 'off' }} ---
         {{ isAvailable ? 'on' : 'off' }}
       </p>
       <img v-if="isGostVisible" src="assets/ghost.png" alt="" />
@@ -37,22 +37,22 @@ CameraPreview.setFlashMode({
   flashMode: flashMode,
 });
 
-const gostDegPos = Math.floor(Math.random() * 360);
+const ghostDegPos = Math.floor(Math.random() * 360);
 
 let distanceFromGost = ref(0);
 
 const isInView = (curDegPos: number): boolean => {
   const demiAngle = 15;
   let bool =
-    curDegPos + demiAngle > gostDegPos && curDegPos - demiAngle < gostDegPos;
+    curDegPos + demiAngle > ghostDegPos && curDegPos - demiAngle < ghostDegPos;
   if (!bool) {
     if (
       curDegPos + demiAngle > 360 &&
-      gostDegPos < curDegPos + demiAngle - 360
+      ghostDegPos < curDegPos + demiAngle - 360
     ) {
       bool = true;
     }
-    if (curDegPos - demiAngle < 0 && gostDegPos > 360 + curDegPos - demiAngle) {
+    if (curDegPos - demiAngle < 0 && ghostDegPos > 360 + curDegPos - demiAngle) {
       bool = true;
     }
   }
@@ -67,7 +67,7 @@ const calcDistanceFromView = (curDegPos: number): number => {
   if (isInView(curDegPos)) {
     return 0;
   }
-  let min = Math.abs(curDegPos - gostDegPos);
+  let min = Math.abs(curDegPos - ghostDegPos);
   if (min > 180) {
     min = 360 - min;
   }
