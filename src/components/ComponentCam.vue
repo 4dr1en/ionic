@@ -1,11 +1,7 @@
 <template>
   <div id="cameraPreview" class="cameraPreview">
-    <div class="gost" v-if="cameraActive">
-      <p>
-        {{ curPos }} / {{ ghostDegPos }} --- {{ cameraActive ? 'on' : 'off' }} ---
-        {{ isAvailable ? 'on' : 'off' }}
-      </p>
-      <img v-if="isGostVisible" src="assets/ghost.png" alt="" />
+    <div class="ghost" v-if="cameraActive">
+      <img v-if="isghostVisible" src="assets/ghost.png" alt="" />
     </div>
   </div>
 </template>
@@ -17,21 +13,16 @@ import {
   CameraPreviewFlashMode,
 } from '@capacitor-community/camera-preview';
 
-import { ref } from "vue";
+import { ref } from 'vue';
 
-import { Motion } from "@capacitor/motion";
-import { Vibration } from "@awesome-cordova-plugins/vibration/ngx";
+import { Motion } from '@capacitor/motion';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
 
 let lastFlash = Date.now();
 let cameraActive = ref(false);
-let curPos = ref('x');
-let isGostVisible = ref(false);
+let isghostVisible = ref(false);
 let lastVibration = Date.now();
-let lightActive = ref(false);
-const isAvailable = ref(false);
-CameraPreview.getSupportedFlashModes().then((available) => {
-  isAvailable.value = available.result.includes('torch');
-});
+
 const flashMode: CameraPreviewFlashMode = 'torch';
 CameraPreview.setFlashMode({
   flashMode: flashMode,
@@ -39,17 +30,13 @@ CameraPreview.setFlashMode({
 
 const ghostDegPos = Math.floor(Math.random() * 360);
 
-let distanceFromGost = ref(0);
+let distanceFromghost = ref(0);
 
 const isInView = (curDegPos: number): boolean => {
-  const demiAngle = 15;
-  let bool =
-    curDegPos + demiAngle > ghostDegPos && curDegPos - demiAngle < ghostDegPos;
+  const demiAngle = 25;
+  let bool = curDegPos + demiAngle > ghostDegPos && curDegPos - demiAngle < ghostDegPos;
   if (!bool) {
-    if (
-      curDegPos + demiAngle > 360 &&
-      ghostDegPos < curDegPos + demiAngle - 360
-    ) {
+    if (curDegPos + demiAngle > 360 && ghostDegPos < curDegPos + demiAngle - 360) {
       bool = true;
     }
     if (curDegPos - demiAngle < 0 && ghostDegPos > 360 + curDegPos - demiAngle) {
@@ -60,10 +47,10 @@ const isInView = (curDegPos: number): boolean => {
 };
 
 /**
- * Get the distance between the gost and the player per cent of the max distance
+ * Get the distance between the ghost and the player per cent of the max distance
  */
 const calcDistanceFromView = (curDegPos: number): number => {
-  const demiAngle = 15;
+  const demiAngle = 25;
   if (isInView(curDegPos)) {
     return 0;
   }
@@ -77,9 +64,9 @@ const calcDistanceFromView = (curDegPos: number): number => {
 
 const openCamera = () => {
   const cameraPreviewOptions: CameraPreviewOptions = {
-    position: "rear",
-    parent: "cameraPreview",
-    className: "cameraPreview",
+    position: 'rear',
+    parent: 'cameraPreview',
+    className: 'cameraPreview',
     toBack: true,
     width: window.screen.width,
   };
@@ -90,37 +77,34 @@ const openCamera = () => {
 openCamera();
 let lastOrientation = 0;
 const loadOrientation = async () => {
-  await Motion.addListener("orientation", (event) => {
-    curPos.value = String(Math.round(event.alpha));
-    isGostVisible.value = isInView(event.alpha);
-    distanceFromGost.value = calcDistanceFromView(event.alpha);
+  await Motion.addListener('orientation', (event) => {
+    isghostVisible.value = isInView(event.alpha);
+    distanceFromghost.value = calcDistanceFromView(event.alpha);
 
-    if (Date.now() - lastVibration > distanceFromGost.value * 10 * 1.5) {
+    if (Date.now() - lastVibration > distanceFromghost.value * 10 * 1.5) {
       navigator.vibrate(100);
       lastVibration = Date.now();
     }
-    if (isGostVisible.value) {
-      var ghostScream = new Audio("assets/audio/ghost_apparition_scream1.mp3");
+    if (isghostVisible.value) {
+      var ghostScream = new Audio('assets/audio/ghost_apparition_scream1.mp3');
       ghostScream.play();
     }
 
-    if (Date.now() - lastFlash > distanceFromGost.value * 10 * 2) {
+    if (Date.now() - lastFlash > distanceFromghost.value * 10 * 2) {
       CameraPreview.setFlashMode({
         flashMode: flashMode,
       });
-      lightActive.value = true;
       setTimeout(() => {
         // set off
         CameraPreview.setFlashMode({
           flashMode: 'off',
         });
-        lightActive.value = false;
       }, 100);
       lastFlash = Date.now();
     }
 
-    let radar = document.getElementById("radar");
-    let rotatePosition: number = 0;
+    let radar = document.getElementById('radar');
+    let rotatePosition = 0;
     if (radar) {
       if (lastOrientation > event.alpha) {
         rotatePosition++;
@@ -189,9 +173,48 @@ ion-content {
   z-index: -1;
 }
 
-.gost {
+.ghost {
   position: absolute;
   z-index: 1;
   color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ghost 10s infinite linear;
+}
+
+@keyframes ghost {
+  from {
+    opacity: 60%;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  14%,
+  86% {
+    opacity: 50%;
+    transform: translate(-60%, -55%) scale(1.1);
+  }
+
+  28%,
+  72% {
+    opacity: 70%;
+    transform: translate(-45%, -40%) scale(1.1);
+  }
+
+  42%,
+  58% {
+    opacity: 60%;
+    transform: translate(-50%, -55%) scale(1.1);
+  }
+
+  50% {
+    opacity: 50%;
+    transform: translate(-55%, -50%) scale(1.1);
+  }
+
+  to {
+    opacity: 60%;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 </style>
