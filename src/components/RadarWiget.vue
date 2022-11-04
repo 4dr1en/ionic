@@ -1,7 +1,7 @@
 <template>
   <div class="radar" id="radar">
 
-    <h1>.</h1>
+    <div class="ghost-pointer"></div>
   </div>
 
 </template>
@@ -54,6 +54,15 @@ html {
   animation-timing-function: linear;
   transform-origin: bottom right;
   border-radius: 100% 0 0 0;
+}
+.ghost-pointer{
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  left: 25%;
+  top: 25%;
+  background-color: red;
+  border-radius:90px;
 }
 
 @keyframes radar-beam {

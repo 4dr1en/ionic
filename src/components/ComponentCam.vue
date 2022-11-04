@@ -8,15 +8,18 @@
 </template>
 
 <script lang="ts" setup>
-import { CameraPreview, CameraPreviewOptions } from '@capacitor-community/camera-preview';
+import {
+  CameraPreview,
+  CameraPreviewOptions,
+} from "@capacitor-community/camera-preview";
 
-import { ref } from 'vue';
+import { ref } from "vue";
 
-import { Motion } from '@capacitor/motion';
-import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+import { Motion } from "@capacitor/motion";
+import { Vibration } from "@awesome-cordova-plugins/vibration/ngx";
 
 let cameraActive = ref(false);
-let curPos = ref('toto');
+let curPos = ref("toto");
 let isGostVisible = ref(false);
 let lastVibration = Date.now();
 
@@ -26,9 +29,13 @@ let distanceFromGost = ref(0);
 
 const isInView = (curDegPos: number): boolean => {
   const demiAngle = 15;
-  let bool = curDegPos + demiAngle > gostDegPos && curDegPos - demiAngle < gostDegPos;
+  let bool =
+    curDegPos + demiAngle > gostDegPos && curDegPos - demiAngle < gostDegPos;
   if (!bool) {
-    if (curDegPos + demiAngle > 360 && gostDegPos < curDegPos + demiAngle - 360) {
+    if (
+      curDegPos + demiAngle > 360 &&
+      gostDegPos < curDegPos + demiAngle - 360
+    ) {
       bool = true;
     }
     if (curDegPos - demiAngle < 0 && gostDegPos > 360 + curDegPos - demiAngle) {
@@ -56,9 +63,9 @@ const calcDistanceFromView = (curDegPos: number): number => {
 
 const openCamera = () => {
   const cameraPreviewOptions: CameraPreviewOptions = {
-    position: 'rear',
-    parent: 'cameraPreview',
-    className: 'cameraPreview',
+    position: "rear",
+    parent: "cameraPreview",
+    className: "cameraPreview",
     toBack: true,
     width: window.screen.width,
   };
@@ -67,9 +74,9 @@ const openCamera = () => {
   cameraActive.value = true;
 };
 openCamera();
-let lastOrientation = 0
+let lastOrientation = 0;
 const loadOrientation = async () => {
-  await Motion.addListener('orientation', (event) => {
+  await Motion.addListener("orientation", (event) => {
     curPos.value = String(Math.round(event.alpha));
     isGostVisible.value = isInView(event.alpha);
     distanceFromGost.value = calcDistanceFromView(event.alpha);
@@ -78,14 +85,20 @@ const loadOrientation = async () => {
       navigator.vibrate(100);
       lastVibration = Date.now();
     }
+    if (isGostVisible.value) {
+      var ghostScream = new Audio("assets/audio/ghost_apparition_scream1.mp3");
+      ghostScream.play();
+    }
 
     let radar = document.getElementById("radar");
+    let rotatePosition: number = 0;
     if (radar) {
       if (lastOrientation > event.alpha) {
-        radar.style.transform = "rotate(1deg)";
+        rotatePosition++;
       } else {
-        radar.style.transform = "rotate(-1deg)";
+        rotatePosition--;
       }
+      radar.style.transform = `rotate(${rotatePosition}deg)`;
       lastOrientation = event.alpha;
     }
   });

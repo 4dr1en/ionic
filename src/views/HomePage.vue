@@ -5,7 +5,6 @@
       <div class="home-content">
         <h1 class="home-title"></h1>
         <FlashText />
-        <RadarWiget />
         <img src="assets/ghost.png" alt="ghost" class="ghost-home" />
         <div class="play-btn-container">
           <a href="/play"><button class="play-btn">Play</button></a>
@@ -19,13 +18,12 @@
 import { defineComponent } from 'vue';
 import { IonPage, IonContent } from '@ionic/vue';
 import FlashText from '@/components/home/FlashText.vue';
-import RadarWiget from '@/components/RadarWiget.vue';
 import { IonHeader, IonToolbar, IonTitle } from '@ionic/vue';
 
 
 export default defineComponent({
   name: 'Tab1Page',
-  components: { IonContent, IonPage, FlashText, RadarWiget },
+  components: { IonContent, IonPage, FlashText },
    mounted() {
     document.onreadystatechange = () => {
       if (document.readyState == "complete") {
@@ -39,8 +37,6 @@ function randomAmbianceSound(ambianceFilesName: Array<string>) {
   let randomAmbiancePath = `assets/audio/${
     ambianceFilesName[Math.floor(Math.random() * ambianceFilesName.length)]
   }`;
-  console.log(randomAmbiancePath);
-  console.log();
   var audioAmbiance = new Audio(randomAmbiancePath);
   audioAmbiance.addEventListener(
     "ended",
