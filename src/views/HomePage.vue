@@ -26,7 +26,32 @@ import { IonHeader, IonToolbar, IonTitle } from '@ionic/vue';
 export default defineComponent({
   name: 'Tab1Page',
   components: { IonContent, IonPage, FlashText, RadarWiget },
+   mounted() {
+    document.onreadystatechange = () => {
+      if (document.readyState == "complete") {
+        randomAmbianceSound(ambianceFilesName);
+      }
+    };
+  },
 });
+let ambianceFilesName = ["ambiance1.mp3"];
+function randomAmbianceSound(ambianceFilesName: Array<string>) {
+  let randomAmbiancePath = `assets/audio/${
+    ambianceFilesName[Math.floor(Math.random() * ambianceFilesName.length)]
+  }`;
+  console.log(randomAmbiancePath);
+  console.log();
+  var audioAmbiance = new Audio(randomAmbiancePath);
+  audioAmbiance.addEventListener(
+    "ended",
+    function () {
+      this.currentTime = 0;
+      this.play();
+    },
+    false
+  );
+  audioAmbiance.play();
+}
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style >

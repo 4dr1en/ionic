@@ -40,23 +40,32 @@ export default defineComponent({
     ComponentCam, RadarWiget
     // ComponentGyroscope
   },
+  mounted() {
+    document.onreadystatechange = () => {
+      if (document.readyState == "complete") {
+        randomAmbianceSound(ambianceFilesName);
+      }
+    };
+  },
 });
-let ambianceFilesName = [
-  "ambiance"
-]
+let ambianceFilesName = ["ambiance1.mp3"];
 function randomAmbianceSound(ambianceFilesName: Array<string>) {
-  let randomAmbiancePath = `assets/${ambianceFilesName[Math.random() * ambianceFilesName.length]}`;
+  let randomAmbiancePath = `assets/audio/${
+    ambianceFilesName[Math.floor(Math.random() * ambianceFilesName.length)]
+  }`;
+  console.log(randomAmbiancePath);
+  console.log();
   var audioAmbiance = new Audio(randomAmbiancePath);
-  audioAmbiance.addEventListener('ended', function () {
-    this.currentTime = 0;
-    this.play();
-  }, false);
+  audioAmbiance.addEventListener(
+    "ended",
+    function () {
+      this.currentTime = 0;
+      this.play();
+    },
+    false
+  );
   audioAmbiance.play();
 }
-
-randomAmbianceSound(ambianceFilesName)
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
